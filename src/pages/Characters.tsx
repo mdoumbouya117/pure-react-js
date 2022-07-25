@@ -2,6 +2,7 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 import Character from '../components/Character'
 import Loader from '../components/Loader'
+import Pagination from '../components/Pagination'
 import { getCharacterByUrl, ICharacter } from '../services/characterService'
 
 export default function Characters() {
@@ -52,10 +53,7 @@ export default function Characters() {
                 <ul>
                     {characters.map((character: ICharacter, index: number) => (<Character key={index} character={character} />))}
                 </ul>
-                <ul>
-                    {[...Array(paginationCount)].map((element, index: number) =>
-                    <li key={index} onClick={() => setPage(index+1)}>{index+1}</li>)}
-                </ul>
+                <Pagination count={paginationCount} setPage={setPage}/>
             </>
             : <Loader />
         }
