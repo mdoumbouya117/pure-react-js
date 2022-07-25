@@ -1,14 +1,18 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import Character from '../components/Character'
+import Loader from '../components/Loader'
 import { getCharacterByUrl, ICharacter } from '../services/characterService'
 
 export default function Characters() {
+  const CHARACTER_PER_PAGE = 10  
   const location = useLocation()
   const { state } : any = location
   const [charactersUrl, ] = React.useState<Array<string>>(state.characters)
   const [characters, setCharacters] = React.useState<Array<ICharacter>>([])
   const [charactersLoading, setCharactersLoading] = React.useState(false)
+  const [page, setPage] = React.useState(1)
+  const paginationCount = Math.ceil(charactersUrl.length / CHARACTER_PER_PAGE)
 
   React.useEffect(() => {
 
@@ -18,7 +22,7 @@ export default function Characters() {
 
           try {
               const responses = await Promise.all(
-                charactersUrl.map(
+                charactersUrl.slice(CHARACTER_PER_PAGE*(page-1), CHARACTER_PER_PAGE*page).map(
                     characterUrl => getCharacterByUrl(characterUrl)
                     .then(response => response)
                     .catch(error => error)
@@ -38,16 +42,22 @@ export default function Characters() {
 
       getCharacters()
 
-  }, [])
+  }, [page, charactersUrl])
  
   return (
     <div>
         <h1>{state.name}</h1>
         {!charactersLoading && characters?.length > 0 ? 
-            <ul>
-            {characters.map((character: ICharacter, index: number) => (<Character key={index} character={character} />))}
-            </ul>
-            : <p>Loading ...</p>
+            <>
+                <ul>
+                    {characters.map((character: ICharacter, index: number) => (<Character key={index} character={character} />))}
+                </ul>
+                <ul>
+                    {[...Array(paginationCount)].map((element, index: number) =>
+                    <li key={index} onClick={() => setPage(index+1)}>{index+1}</li>)}
+                </ul>
+            </>
+            : <Loader />
         }
     </div>
   )

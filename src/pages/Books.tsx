@@ -1,5 +1,6 @@
 import React from 'react'
 import Book from '../components/Book'
+import Loader from '../components/Loader'
 import { getBooks, IBook } from '../services/bookService'
 
 export default function Books() {
@@ -20,9 +21,12 @@ export default function Books() {
   return (
     <div>
         <h1>Books</h1>
-        <ul>
-            {!booksLoading && books.length > 0 ? books.map((book: IBook) => <Book key={book.isbn} book={book}/>) : <p>Loading ...</p>}
-        </ul>
+            {!booksLoading && books.length > 0 ? 
+            <ul>
+              {books.map((book: IBook) => <Book key={book.isbn} book={book}/>)}
+            </ul>
+            : <Loader />
+          }
     </div>
   )
 }
