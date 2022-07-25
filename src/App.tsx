@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Books from './pages/Books';
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
         <Routes>
             <Route
               path='/'
-              element={<h1>First look !</h1>}
+              element={<Books />}
             />
         </Routes>
       </div>
