@@ -50,7 +50,7 @@ export default function Characters() {
         <h1>{state.name}</h1>
         {!charactersLoading && characters?.length > 0 ? 
             <>
-                <ul>
+                <ul className='character-list'>
                     {characters.map((character: ICharacter, index: number) => (<Character key={index} character={character} />))}
                 </ul>
                 <Pagination count={paginationCount} setPage={setPage}/>
